@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Provider, useSelector } from "react-redux";
+import store from "./redux";
+import CategoryForm from "./components/CategoryForm";
+import Form from "./components/Form";
+import FormList from "./components/FormList";
 
-function App() {
+const App = () => {
+  const categories = useSelector((state) => state.categories);
+  const [showCategory, setShowCategory] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Provider store={store}>
+      <div>
+        <button
+          className="cat-btn"
+          onClick={() => setShowCategory(!showCategory)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          {showCategory ? "Hide Category" : "Create Category"}
+        </button>
+        {showCategory && <CategoryForm />}
+
+        <h2>Create Form</h2>
+        <Form categories={categories} />
+
+        <h2>Forms</h2>
+        <FormList categories={categories} />
+      </div>
+    </Provider>
   );
-}
+};
 
 export default App;
